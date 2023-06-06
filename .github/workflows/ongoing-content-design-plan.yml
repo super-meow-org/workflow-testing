@@ -1,0 +1,68 @@
+name: Comment for small, iterative issues
+
+# **What it does**: Adds a bot comment, containing directions and helpful links, to a docs-content issue for which we already know the required updates (for example, whenever a new ecosystem, language, or package manager is supported) when the `ongoing-content-design-plan` label is applied by a focus team DRI or another writer.
+# **Why we have it**: This is intended to be used on docs updates for which we know in advance the content to update, and for which content design plans will be very similar (same audiences, user stories, and similar content needing updating). Our official approach for these issues is now to skip the content design plan phase by default, and provide writers and contributors external to the Docs team with a list of articles and reusables to update, as well as mention important information to consider. If the writer who picks up this work realizes that we need to document edge cases, or provide additional information, then the normal workflow, which includes a content design plan, is the way to go.
+# **Who does it impact**: Writers, Hubbers outside Docs contributing to our docs.
+
+on: 
+  issues:
+    types: 
+      - labeled
+permissions:
+  issues: write
+jobs:
+  job:
+    name: Comment on small iterative issue with instructions for PR
+    runs-on: ubuntu-latest
+    if: github.event.label.name == 'ongoing-content-design-plan'
+    steps:
+      - name: Comment on small, iterative issue
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          issue: ${{ github.event.issue.html_url }}
+        run: | 
+          gh issue comment $issue --body 'This issue has been identified as a small, iterative issue, for which the relevant Docs focus team knows the content to update, as similar issues have been created in the past. As a result, a content design plan may not be needed, and you can proceed with content creation. However, before starting on the content creation, it is your responsibility to check with the PM/stakeholder that we do not need to document anything special, caveats, or edge cases. If that is the case, this work may require a content design plan, and you will need to follow the default workflow.
+          
+          Open a PR in [`docs-internal`](https://github.com/github/docs-internal) and make the changes listed in the relevant collapsible section below. Note that depending on the issue, you may need to create a feature-based versioning flag and use it to version the new content. For more information about these flags, see [feature-based versioning](https://github.com/github/docs-internal/blob/main/data/features/README.md).
+          
+          Thank you :fishsticks: :sparkling_heart:
+          
+          _If this is a Hubber contribution_: 
+           
+          - [Contributing guide](https://github.com/github/docs-internal/blob/main/CONTRIBUTING.md) and [Working in the GitHub Docs repo](https://github.com/github/docs-internal/blob/main/contributing/working-in-docs-repository.md) should contain all the resources you need!
+          - When your PR is ready, get a technical review from someone on your team to ensure everything’s ready to go, then add the `ready-for-doc-review` label for a writer review! We need _at least_ 72 business hours to review and finalize your PR, so it’s ready to ship :rocket:
+
+          <details><summary>New language/package manager/ecosystem supported by the dependency graph and Dependabot alerts</summary>
+          <p>
+          
+          - If the issue is about a new supported language:
+          
+             - [ ] Update `content/code-security/supply-chain-security/understanding-your-software-supply-chain/about-the-dependency-graph.md`.
+             - [ ] Check whether dependency scope is supported by the new language. If it is, update `data/reusables/dependabot/dependabot-alerts-dependency-scope.md` accordingly.
+             - [ ] Update `content/get-started/learning-about-github/github-language-support.md` by referencing a new reusable for the new language (language reusables can be found in `data/reusables/supported-languages`).
+             - [ ] Check whether the headers specified in `data/reusables/supported-languages/products-table-header.md` are correct and still apply.
+             
+          - If the issue is about a new supported package manager or ecosystem:
+
+             - [ ] Update `data/reusables/dependabot/supported-package-managers.md` by adding a row for the newly supported package manager, and optionally adding a specific section if there are special cases, caveats, or if we need to provide information that does not fit in the table.
+             - [ ] Check whether dependency scope is supported by the new ecosystem. If it is, update `data/reusables/dependabot/dependabot-alerts-dependency-scope.md` accordingly.
+          
+          </p>
+          </details>
+
+          <details><summary>New language / package manager / ecosystem supported by Dependabot version updates and/or security updates</summary>
+          <p>
+
+             - [ ] Update `data/reusables/dependabot/supported-package-managers.md` by adding a row for the newly supported package manager, and optionally adding a specific section if there are special cases, caveats, or if we need to provide information that does not fit in the table.
+          </p>
+          
+          </details>
+
+          <details><summary>New language supported by the GitHub Advisory Database</summary>
+          <p>
+
+           - Update `content/code-security/security-advisories/global-security-advisories/about-the-github-advisory-database.md`.
+
+          </p>
+          </details>
+          '
