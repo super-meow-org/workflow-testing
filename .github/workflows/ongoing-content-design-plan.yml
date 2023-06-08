@@ -49,6 +49,7 @@ jobs:
           <p>
 
              - [ ] Update `data/reusables/dependabot/supported-package-managers.md` by adding a row for the newly supported package manager, and optionally adding a specific section if there are special cases, caveats, or if we need to provide information that does not fit in the table.
+             - [ ] Get confirmation from the PM/stakeholder about the info that will fill the table columns (YAML value, supported versions, support for private repositories, private registries, and vendoring).
           </p>
           
           </details>
@@ -61,7 +62,7 @@ jobs:
           </p>
           </details>
           
-          _If this is a Hubber contribution_: 
+          _Additionally, if this is a Hubber contribution_: 
            
           - [Contributing guide](https://github.com/github/docs-internal/blob/main/CONTRIBUTING.md) and [Working in the GitHub Docs repo](https://github.com/github/docs-internal/blob/main/contributing/working-in-docs-repository.md) should contain all the resources you need!
           - When your PR is ready, get a technical review from someone on your team to ensure everything’s ready to go, then add the `ready-for-doc-review` label for a writer review! We need _at least_ 72 business hours to review and finalize your PR, so it’s ready to ship :rocket:
